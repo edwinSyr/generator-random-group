@@ -20,7 +20,7 @@
       .name {
         width: 300px;
         height: 200px;
-      }q
+      }
     </style>
   </head>
   <body>
@@ -51,16 +51,15 @@
     </div>
 
     <h2>Hasil Kelompok</h2>
-    <div>
-      <div
-        id="groups"
-        style="
-          display: flex;
-          align-items: left;
-          justify-content: left;
-          width: 500px;
-        "
-      ></div>
+    <div
+      style="
+        display: flex;
+        align-items: left;
+        justify-content: left;
+        width: 500px;
+      "
+    >
+      <span id="groups"></span>
     </div>
 
     <script>
@@ -86,17 +85,16 @@
         const groupsList = document.getElementById("groups");
 
         groups.forEach((group, index) => {
-          const listItem = document.createElement("div");
-          listItem.textContent = `Kelompok ${index + 1} : \n ${group.join(
-            ", "
-          )}`;
+          const listItem = document.createElement("span");
+          let kelompok = `Kelompok ${index + 1} : \n`;
+          listItem.textContent = `${kelompok} ${group.join(",  ")}`;
           groupsList.appendChild(listItem);
           listItem.style.padding = "10px";
           listItem.style.margin = "5px";
           listItem.style.border = "1px solid #000";
           listItem.style.display = "flex";
           listItem.style.alignItems = "center";
-          listItem.style.justifyContent = "center";
+          listItem.style.justifyContent = "left";
         });
       }
     </script>
