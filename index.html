@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Random Data Generator</title>
   </head>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <style>
     body {
       font-family: "Arial", sans-serif;
@@ -48,18 +47,29 @@
       height: 100px;
       margin-top: -15px;
     }
+    input {
+      margin-bottom: 20px;
+    }
     textarea,
-    input[type="number"] {
+    input[type="number"],
+    input[type="text"] {
       width: 100%;
       padding: 8px;
       font-family: "Arial", sans-serif;
-      margin-bottom: 3px;
+      /* margin-bottom: 3px; */
       border: 1px solid #ccc;
       border-radius: 4px;
       box-sizing: border-box;
     }
+    .btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
     button {
+      margin: 0 5px;
+      width: 100%;
       background-color: #3498db;
       color: #fff;
       padding: 10px;
@@ -85,15 +95,11 @@
       align-items: left;
       justify-content: left;
     }
-    footer {
-      text-align: center;
-      background: #2980b9;
-      padding: 10px;
-      color: #fff;
-    }
-    footer p {
-      font-weight: lighter;
-      line-height: 30px;
+    #outputCourse {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -25px;
     }
   </style>
 
@@ -113,17 +119,22 @@
       <div class="container">
         <label for="numGroups">Jumlah Kelompok </label>
         <input type="number" id="numGroups" placeholder="" min="1" value="1" />
-
-        <button onclick="generateGroups()">Buat Kelompoknya Ga sih?</button>
-        <button onclick="takeOutput()">Simpen jadi PDF, ya kan?</button>
+        <label for="contentCourse">Mata Kuliah</label>
+        <input type="text" id="course" />
+        <div class="btn">
+          <button onclick="generateGroups()">Buat Kelompoknya Ga sih?</button>
+          <button onclick="takeOutput()">Simpen jadi PDF, ya kan?</button>
+        </div>
       </div>
       <h2>Hasil Kelompok</h2>
+      <span id="outputCourse"></span>
       <div>
         <span id="groups"></span>
       </div>
     </div>
     <script>
       function generateGroups() {
+        const inputCourse = document.getElementById("course").value;
         const input = document.getElementById("students").value;
         const numGroups = parseInt(
           document.getElementById("numGroups").value,
@@ -141,12 +152,18 @@
           const groupIndex = i % numGroups;
           groups[groupIndex].push(students[i]);
         }
-        displayGroups(groups);
+        displayGroups(groups, inputCourse);
       }
 
-      function displayGroups(groups) {
+      function displayGroups(groups, inputCourse) {
         const groupsList = document.getElementById("groups");
+        const outputCourse = document.getElementById("outputCourse");
         groupsList.innerHTML = "";
+        outputCourse.textContent = `Mata Kuliah : ${
+          inputCourse || "Tidak ada mata kuliah"
+        }`;
+        outputCourse.style.textAlign = "center";
+        outputCourse.style.color = "#3498db";
 
         groups.forEach((group, index) => {
           const listItem = document.createElement("span");
