@@ -1,67 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Random Group Generator</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 50px;
-      }
-      .container-fluid {
-        width: 500px;
-      }
-      label,
-      input {
-        width: 100%;
-        margin: 10px 0 10px 0;
-      }
-      .name {
-        width: 300px;
-        height: 200px;
-      }
-    </style>
-  </head>
+  <head> </head>
   <body>
     <div class="container-fluid">
       <h1>Random Group Generator</h1>
       <div class="container">
         <label for="students">Input nama: </label><br />
-        <!-- <input
+        <input
           class="name"
           type="text"
           id="students"
-          placeholder="edwin, pawas, dll"
-        /> -->
-        <textarea name="nama" id="students" cols="30" rows="10"></textarea>
+          placeholder="edwin, napis, arip, pawas, ade, della, ameng, alin, aliyah, sofi, rohmah, safinah, andini, agis, rossi, aul, pipit, mega, endah, cut, cahya, selvin, maul, anis, meli"
+        />
       </div>
       <div class="container">
         <label for="numGroups">Jumlah Group: </label>
-        <input
-          type="number"
-          id="numGroups"
-          placeholder="e.g., 3"
-          min="1"
-          value="1"
-        />
+        <input type="number" id="numGroups" placeholder="" min="1" value="1" />
 
         <button onclick="generateGroups()">Tentukan Kelompok</button>
       </div>
+      <h2>Hasil Kelompok</h2>
+      <div
+        style="
+          display: flex;
+          align-items: left;
+          justify-content: left;
+          width: 500px;
+        "
+      >
+        <span id="groups"></span>
+      </div>
     </div>
-
-    <h2>Hasil Kelompok</h2>
-    <div
-      style="
-        display: flex;
-        align-items: left;
-        justify-content: left;
-        width: 500px;
-      "
-    >
-      <span id="groups"></span>
-    </div>
-
     <script>
       function generateGroups() {
         const input = document.getElementById("students").value;
@@ -70,19 +39,47 @@
           10
         );
         const students = input.split(", ").map((name) => name.trim());
+        students.sort();
 
+        // Acak urutan siswa
+        students.sort(() => Math.random() - 0.5);
+
+        // Hitung jumlah siswa per kelompok
+        const studentsPerGroup = Math.floor(students.length / numGroups);
         const groups = Array.from({ length: numGroups }, () => []);
 
+        // Buat loop untuk memasukkan siswa ke dalam kelompok
         for (let i = 0; i < students.length; i++) {
-          const currentGroupIndex = i % numGroups;
-          groups[currentGroupIndex].push(students[i]);
+          const groupIndex = i % numGroups;
+          groups[groupIndex].push(students[i]);
+          // Jika kelompok sudah penuh, lanjutkan ke siswa berikutnya
+          if (groups[groupIndex].length === studentsPerGroup) {
+            continue;
+          }
         }
 
+        // Ulangi kelompok
+        for (let i = 0; i < students.length; i++) {
+          // Pilih kelompok secara acak
+          let randomGroupIndex = Math.floor(Math.random() * numGroups);
+
+          // Masukkan siswa ke dalam kelompok
+          //   groups[randomGroupIndex].push(students[i]);
+          while (groups[randomGroupIndex].includes(students[i])) {
+            randomGroupIndex = Math.floor(Math.random() * numGroups);
+          }
+
+          // Jika kelompok sudah penuh, lanjutkan ke siswa berikutnya
+          if (groups[randomGroupIndex].length === studentsPerGroup) {
+            continue;
+          }
+        }
         displayGroups(groups);
       }
 
       function displayGroups(groups) {
         const groupsList = document.getElementById("groups");
+        groupsList.innerHTML = "";
 
         groups.forEach((group, index) => {
           const listItem = document.createElement("span");
