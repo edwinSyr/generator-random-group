@@ -127,41 +127,17 @@
           document.getElementById("numGroups").value,
           10
         );
-        const students = input.split(", ").map((name) => name.trim());
+        const formattedInput = input.replace(/\n/g, ", ");
+        const students = formattedInput.split(", ").map((name) => name.trim());
         students.sort();
-
-        // Acak urutan siswa
         students.sort(() => Math.random() - 0.5);
-
-        // Hitung jumlah siswa per kelompok
+        2;
         const studentsPerGroup = Math.floor(students.length / numGroups);
         const groups = Array.from({ length: numGroups }, () => []);
 
-        // Buat loop untuk memasukkan siswa ke dalam kelompok
         for (let i = 0; i < students.length; i++) {
           const groupIndex = i % numGroups;
           groups[groupIndex].push(students[i]);
-          // Jika kelompok sudah penuh, lanjutkan ke siswa berikutnya
-          if (groups[groupIndex].length === studentsPerGroup) {
-            continue;
-          }
-        }
-
-        // Ulangi kelompok
-        for (let i = 0; i < students.length; i++) {
-          // Pilih kelompok secara acak
-          let randomGroupIndex = Math.floor(Math.random() * numGroups);
-
-          // Masukkan siswa ke dalam kelompok
-          //   groups[randomGroupIndex].push(students[i]);
-          while (groups[randomGroupIndex].includes(students[i])) {
-            randomGroupIndex = Math.floor(Math.random() * numGroups);
-          }
-
-          // Jika kelompok sudah penuh, lanjutkan ke siswa berikutnya
-          if (groups[randomGroupIndex].length === studentsPerGroup) {
-            continue;
-          }
         }
         displayGroups(groups);
       }
